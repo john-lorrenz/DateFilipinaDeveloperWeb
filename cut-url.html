@@ -1,0 +1,89 @@
+<html>
+
+<head>
+    <title></title>
+
+<style type="text/css">
+
+
+input{
+	    height: 100;
+    width: 70%;
+    font-size: 20pt;
+    padding: 10;
+}
+
+</style>
+
+
+</head>
+
+<body>
+
+    <center>
+        <h1>CUT URL</h1>
+        	
+        	<form>
+        	<input type="text" id="link" placeholder=""/><br>
+        <br>
+        <br>			
+        <button id="submit">Submit</button>
+
+</form>
+
+    </center>
+
+</body>
+
+
+	<script src="jquery-3.4.1.slim.min.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+	<script type="module">
+
+
+		$( "form" ).submit(function( event ) {
+		  	return false
+		  	var link_long = $("#link").val();
+			var link_parts = link_long.split("%2F");
+
+			window.location.href = "http://www." + link_parts[2] + "/" + link_parts[3];
+
+			console.log("test")
+
+		});
+
+
+
+		$("input").bind("propertychange change keyup paste input", function(){
+		    // do stuff;
+		    var link_long = $("#link").val();
+			var link_parts = link_long.split("%2F");
+
+			window.location.href = "http://www." + link_parts[2] + "/" + link_parts[3];
+
+			console.log("test")
+		});
+
+
+
+		$( "#submit" ).on( "click", function( event ) {
+		  	
+		  	var link_long = $("#link").val();
+			var link_parts = link_long.split("%2F");
+
+			window.location.href = "http://www." + link_parts[2] + "/" + link_parts[3];
+
+		});
+				
+
+
+
+
+	</script>
+
+
+
+
+</html>

@@ -1,0 +1,163 @@
+<html>
+
+<head>
+    <title></title>
+
+        <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+</head>
+
+<body>
+
+	<div class="container">
+        <h1>CREATE A USER</h1>
+	        	
+				<div class="radio">
+					<label class="radio-inline">
+						<input type="radio" name="gender" id="female" value="female"> Female
+					</label>
+
+					<label class="radio-inline">
+						<input type="radio" name="gender" id="male" value="male"> Male
+					</label>
+				</div>
+
+				<input class="form-control" type="text" id="firstName" placeholder="First name"/><br>
+				<input class="form-control" type="text" id="userProfileMainImageUrl" placeholder="Profile URL"/><br>
+	        	<input class="form-control" type="text" id="country" placeholder="Country"/><br>
+	        	<input class="form-control" type="text" id="city" placeholder="City"/><br>
+	        	<input class="form-control" type="text" id="region" placeholder="Region (e.g. Palawan, Manila, Cebu, Davao etc.)"/><br>
+
+        <button class="btn btn-primary btn-lg btn-block" id="submit">Submit</button>
+	</div>
+
+</body>
+
+
+	<script src="jquery-3.4.1.slim.min.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+	<script type="module">
+
+		var firebaseConfig = {
+		apiKey: "AIzaSyDOWJXtipfUhqNmESJKjyaz-P1jjCCx1Y8",
+		authDomain: "datefilipina.firebaseapp.com",
+		databaseURL: "https://datefilipina.firebaseio.com",
+		projectId: "datefilipina",
+		storageBucket: "datefilipina.appspot.com",
+		messagingSenderId: "962248553463",
+		appId: "1:962248553463:web:d070b0b1b56ba86cd974f2",
+		measurementId: "G-RWTSY5JH82"
+		};
+
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+
+
+		var db = firebase.firestore();
+		
+		$( "#female" ).on( "click", function( event ) {
+			$("#country").val("Philippines")
+		})
+
+		$( "#male" ).on( "click", function( event ) {
+			$("#country").val("")
+		})
+
+		$( "#submit" ).on( "click", function( event ) {
+
+		  	// ADD user
+		  	db.collection("users").add({
+				firstName: $("#firstName").val(),
+			    gender: $("input[name='gender']:checked").val(),
+				userProfileMainImageUrl: $("#userProfileMainImageUrl").val(),
+				lastActiveDate: 1579562861,
+				country: $("#country").val(),
+				city: $("#city").val(),
+			    spotlightSubscription: {
+			    	"expiration": "1579886861",
+					"purchaseDate": "1579562861"
+
+			    },
+			    userPreference: {"place": $("#region").val()},
+			    goldBars: 0,
+			    registrationStepNumber: 0
+			})
+			.then(function(docRef) {
+				console.log("Document written with ID: ", docRef.id);
+					
+				// UPDATE uid field
+				var washingtonRef = db.collection("users").doc(docRef.id);
+
+				// Set the "capital" field of the city 'DC'
+				washingtonRef.update({
+				    uid: docRef.id
+				})
+				.then(function() {
+					$("input:radio").attr("checked", false)
+					$("input").val("")
+				    alert("Document written with ID: " + docRef.id)
+				})
+				.catch(function(error) {
+				    // The document probably doesn't exist.
+				    console.error("Error updating document: ", error);
+				});
+				
+			})
+			.catch(function(error) {
+			    console.log("Error adding document: ", error);
+			});
+
+		});
+
+		// var uid: String = "",
+	 //    var email: String = "",
+	 //    var creationDate: Long = 0,
+	 //    var gender: String = "",
+	 //    var birthday: String = "",
+	 //    var birthdayLong: Long = 0,
+	 //    var firstName: String = "",
+	 //    var profileImages: List<String> = listOf(),
+	 //    var provice: String = "",
+	 //    var bio: String = "",
+	 //    var preferredPartnerBio: String = "",
+	 //    var userProfileMainImageUrl: String = "",
+	 //    var userPreference: UserPreference = UserPreference(),
+
+	 //    var age: String = "",
+	 //    var activeStatus: String = "",
+	 //    var nationality: String = "",
+	 //    var occupation: String = "",
+	 //    var country: String = "",
+	 //    var region: String = "",
+	 //    var city: String = "",
+
+	 //    var subscription: UserSubscription = UserSubscription(),
+
+	 //    var profession : String = "",
+	 //    var education : String = "",
+	 //    var smoker : String = "",
+	 //    var religion : String = "",
+	 //    var bodyType : String = "",
+	 //    var relocate : String = "",
+	 //    var maritalStatus : String = "",
+	 //    var children : String = "",
+	 //    var drinker : String = "",
+	 //    var ethnicity : String = "",
+	 //    var height : String = "",
+
+	 //    var lastActiveDate: Long = 0,
+	 //    var spotlightSubscription: SpotlightSubscription = SpotlightSubscription()
+
+
+
+	</script>
+
+
+
+
+</html>

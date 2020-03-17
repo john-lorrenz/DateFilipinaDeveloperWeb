@@ -1,0 +1,129 @@
+<html>
+
+<head>
+    <title></title>
+
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+	<div class="container">
+    
+		<h1>GET USERS</h1>
+
+
+    </div>
+
+</body>
+
+
+	<script src="jquery-3.4.1.slim.min.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+	<script>
+
+
+		$( document ).ready(function() {
+		    
+		    	console.log("testing")
+
+				var firebaseConfig = {
+					apiKey: "AIzaSyDOWJXtipfUhqNmESJKjyaz-P1jjCCx1Y8",
+					authDomain: "datefilipina.firebaseapp.com",
+					databaseURL: "https://datefilipina.firebaseio.com",
+					projectId: "datefilipina",
+					storageBucket: "datefilipina.appspot.com",
+					messagingSenderId: "962248553463",
+					appId: "1:962248553463:web:d070b0b1b56ba86cd974f2",
+					measurementId: "G-RWTSY5JH82"
+				};
+
+				// Initialize Firebase
+				firebase.initializeApp(firebaseConfig);
+
+
+				var db = firebase.firestore();
+
+				var userName = $("#userName").val();
+				var userName2 = $("#userName2").val();
+				
+				var ref = db.collection("users").orderBy("firstName")
+							
+
+				ref
+					.get()
+					.then(function(querySnapshot) {
+				        querySnapshot.forEach(function(doc) {
+
+				            var doc_data = doc.data()
+				            	
+				            console.log(doc.id, " => ", doc_data);
+				            var profile_image = ""
+
+				            if (doc_data.userProfileMainImageUrl.toString() === ""){
+				            	profile_image = "https://www.freeiconspng.com/uploads/no-image-icon-15.png"
+				            } else {
+				            	profile_image = doc_data.userProfileMainImageUrl.toString()
+				            }
+
+				            var profile_name = ""
+
+				            if (doc_data.firstName === ""){
+				            	profile_name = "-"
+				            } else {
+				            	profile_name = doc_data.firstName
+				            }
+
+							$(".container")
+							    .append(drawThumbnail(profile_image, profile_name, doc_data.uid, doc_data.email))
+
+
+				        });
+				    })
+				    .catch(function(error) {
+				        console.log("Error getting documents: ", error);
+				    });
+
+
+		});
+
+		function properData(unixtimestamp){
+
+			var dt=eval(unixtimestamp*1000);
+			var myDate = new Date(dt);
+			return(myDate.toLocaleString());
+			
+		}
+
+		function drawThumbnail(img_src, name, uid, email){
+			var thumbnail = '<div class="col-xs-3" style="min-height: 300;">'
+								+ '<div class="row">'
+								  + '<div class="col-xs-12">'
+								    + '<div class="thumbnail">'
+								      + '<img src="'+img_src+'" style="height: 150;">'
+								      + '<div class="caption">'
+								        + '<h3>'+name+'</h3>'
+								        + '<p style="font-size: 14;">'+email+'</p>'
+								        + '<p style="font-size: 12;">'+uid+'</p>'
+								      + '</div>'
+								    + '</div>'
+								  + '</div>'
+								+ '</div>'
+							+ '</div>';
+
+			return thumbnail;
+		}
+
+	</script>
+
+
+
+
+</html>

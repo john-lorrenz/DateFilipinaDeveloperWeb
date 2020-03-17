@@ -1,0 +1,115 @@
+<html>
+
+<head>
+    <title></title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <center>
+        <h1>CREATE A USER</h1>
+        
+			<center>
+				<table style="width:100%" class="table table-bordered">
+				<thead class="thead-dark">
+				  <tr>
+				    <th>Created Date</th>
+				    <th>Created Date</th>
+				    <th>Message</th>
+				  </tr>
+				  </thead>
+				  <tbody>
+				  </tbody>
+				</table>
+			<center>
+
+    </center>
+
+</body>
+
+
+	<script src="jquery-3.4.1.slim.min.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+	<script>
+
+
+		$( document ).ready(function() {
+		    
+		    	console.log("testing")
+
+				var firebaseConfig = {
+					apiKey: "AIzaSyDOWJXtipfUhqNmESJKjyaz-P1jjCCx1Y8",
+					authDomain: "datefilipina.firebaseapp.com",
+					databaseURL: "https://datefilipina.firebaseio.com",
+					projectId: "datefilipina",
+					storageBucket: "datefilipina.appspot.com",
+					messagingSenderId: "962248553463",
+					appId: "1:962248553463:web:d070b0b1b56ba86cd974f2",
+					measurementId: "G-RWTSY5JH82"
+				};
+
+				// Initialize Firebase
+				firebase.initializeApp(firebaseConfig);
+
+
+				var db = firebase.firestore();
+
+				var userName = $("#userName").val();
+				var userName2 = $("#userName2").val();
+				
+				var ref = db.collection("user-chat-messages")
+					.doc("CeQbjLGzHVgMdhv6U4IU8SFtDWC3")
+					.collection("nkjQo7lYafSbhZe8cPMCV11N4h13")
+					.orderBy("createdDate");
+
+				// var ref = db.collection("user-chat-messages")
+				// 	.doc("CeQbjLGzHVgMdhv6U4IU8SFtDWC3")
+				// 	.collection("nkjQo7lYafSbhZe8cPMCV11N4h13")
+				// 	.orderBy("createdDate", "desc")
+				// 	.startAfter(1580196780)
+				// 	.limit(4);
+
+
+				ref
+					.get()
+					.then(function(querySnapshot) {
+				        querySnapshot.forEach(function(doc) {
+				            // doc.data() is never undefined for query doc snapshots
+
+				            
+
+				            var doc_data = doc.data()
+				            	
+				            console.log(doc.id, " => ", doc_data);
+
+							$("table").find('tbody')
+							    .append('<tr><td>'+properData(doc_data.createdDate)+'</td><td>'+doc_data.createdDate+'</td><td>'+doc_data.message+'</td></tr>')
+
+
+				        });
+				    })
+				    .catch(function(error) {
+				        console.log("Error getting documents: ", error);
+				    });
+
+
+		});
+
+		function properData(unixtimestamp){
+
+			var dt=eval(unixtimestamp*1000);
+			var myDate = new Date(dt);
+			return(myDate.toLocaleString());
+			
+		}
+	</script>
+
+
+
+
+</html>
